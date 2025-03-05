@@ -1,0 +1,38 @@
+services:
+    db:
+        image: mysql:8.0
+        container_name: mysql_db
+        environment:
+            MYSQL_ROOT_PASSWORD: admin
+            MYSQL_DATABASE: ${DB_NAME}
+            MYSQL_PASSWORD: ${DB_PASSWORD}
+        ports:
+            - '3306:3306'
+        volumes:
+            - mysql_data:/var/lib/mysql
+        networks:
+            - app-network
+
+    app:
+        build: .
+        container_name: nestjs_app
+        depends_on:
+            - db
+        environment:
+            DB_HOST: db # Nome do serviço do banco de dados
+            DB_PORT: ${DB_PORT}
+            DB_USER: ${DB_USER}
+            DB_PASSWORD: ${DB_PASSWORD}
+            DB_DATABASE: ${DB_NAME}
+        ports:
+            - '${APP_PORT}:3000'
+        networks:
+            - app-network
+        restart: unless-stopped
+
+volumes:
+    mysql_data:
+
+networks:
+    app-network:
+        driver: bridge
