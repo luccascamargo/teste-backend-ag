@@ -65,6 +65,7 @@ Esta API permite a criação, consulta, atualização e remoção de produtos. A
 {
     "nome": "Smartphone XYZ",
     "preco": 1999.99,
+    "codigo_barras": "jkldansiduhi8h89327y987hh93fghhfue",
     "estoque": 10
 }
 ```
@@ -182,3 +183,14 @@ DELETE /products/1
     "message": "Produto removido com sucesso"
 }
 ```
+
+### Respostas
+
+### Explique a razão pela qual aceitou ou rejeitou o requisito de utilizar decimal para a quantidade em estoque.
+#### Ao meu ver pode ser que o produto seja liquido. Exemplo. 10,5L de petroléo por galão.
+#### Utilizei AI para gerar as docs e o seed de forma rapida e não perder esse tempo durante o processo
+#### Não sabia se poderia utilizar algum ORM ou não. Utilizando TypeOrm ou Prisma haveria melhorias significativas no código. Ainda tem bastante coisa que daria para melhorar, mas como se trata de um teste achei melhor entregar funcionando do que entregar pela metade.
+
+Obrigado pela oportunidade, abraços.
+
+
