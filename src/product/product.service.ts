@@ -12,7 +12,7 @@ export class ProductService {
         try {
             const connection = await this.databaseService.getConnection();
 
-            const product = await connection.query(
+            await connection.query(
                 `INSERT INTO products (nome, codigo_barras, quantidade, preco) VALUES (?, ?, ?, ?)`,
                 [
                     creatProductDto.nome,
@@ -21,7 +21,7 @@ export class ProductService {
                     creatProductDto.preco,
                 ],
             );
-            return product;
+            return { mensagem: 'Produto criado com sucesso' };
         } catch (error) {
             console.error('Erro ao atualizar produto:', error);
             throw new Error('Erro ao atualizar produto no banco de dados.');
@@ -51,7 +51,10 @@ export class ProductService {
                 [codigo],
             );
 
-            return product[0];
+            if (Array.isArray(product) && product.length > 0) {
+                return product[0];
+            }
+            return { mensagem: 'Produto não encontrado' };
         } catch (error) {
             console.error('Erro ao atualizar produto:', error);
             throw new Error('Erro ao atualizar produto no banco de dados.');
@@ -112,7 +115,7 @@ export class ProductService {
 
             if (result.affectedRows > 0) {
                 console.log('Produto atualizado com sucesso!');
-                return true;
+                return { mensagem: 'Produto atualizado com sucesso!' };
             } else {
                 console.log(
                     'Nenhum produto foi atualizado. Verifique os dados.',
@@ -129,12 +132,15 @@ export class ProductService {
         try {
             const connection = await this.databaseService.getConnection();
 
-            const [product] = await connection.query(
+            const [result] = await connection.query<ResultSetHeader>(
                 `DELETE FROM products WHERE codigo = ?`,
                 [id],
             );
 
-            return product;
+            if (result.affectedRows > 0) {
+                return { mensagem: 'Produto removido com sucesso!' };
+            }
+            return { mensagem: 'Produto não encontrado' };
         } catch (error) {
             console.error('Erro ao atualizar produto:', error);
             throw new Error('Erro ao atualizar produto no banco de dados.');
